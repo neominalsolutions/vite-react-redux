@@ -1,10 +1,24 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 // sürekli güncellemeyen veriler için tercih edilir.
-const productApi = createAsyncThunk('product/fetch', async () => {
+const productFetchApi = createAsyncThunk('product/fetch', async () => {
 	const response = await fetch('https://fakestoreapi.com/products');
 	return response.json();
 });
+
+// POST, PUT, DELETE gibi işlemler için redux ile nasıl çalışıyoruz?
+const productApiPost = createAsyncThunk(
+	'product/post',
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	async (data: any) => {
+		const response = await axios.post(
+			'https://fakestoreapi.com/products',
+			data
+		);
+		return response.data; // action.payload olarak döner
+	}
+);
 
 // fullfilled, pending, rejected
 
@@ -25,11 +39,10 @@ const productSlice = createSlice({
 	extraReducers: (builder) => {
 		// async işlemler için ekstra reducerlar kullanılır
 		// veri çekilirken ki asenkron işlem aşaması
-		builder.addCase(productApi.pending, (state: ProductState) => {
+		builder.addCase(productFetchApi.pending, (state: ProductState) => {
 			state.loading = true;
 		});
-		builder.addCase(
-			productApi.fulfilled, // resolved olduğunda
+		builder.addCase(productFetchApi.fulfilled, // resolved olduğunda
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(state: ProductState, action: any) => {
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,13 +56,37 @@ const productSlice = createSlice({
 				state.loading = false;
 			}
 		);
-		builder.addCase(productApi.rejected, (state: ProductState) => {
+		builder.addCase(productFetchApi.rejected, (state: ProductState) => {
 			// hata olduğunda
 			state.error = 'Veri çekilirken hata oluştu';
+			state.loading = false;
+		});
+		builder.addCase(productApiPost.pending, (state: ProductState) => {
+			state.loading = false;
+		});
+		builder.addCase(productApiPost.fulfilled,
+			(
+				state: ProductState,
+				action: PayloadAction<{ id: number; title: string; price: number }>
+			) => {
+				// mapping işlemleri
+				state.data = [
+					{
+						id: action.payload.id,
+						name: action.payload.title,
+						price: action.payload.price,
+					},
+					...state.data,
+				];
+				state.loading = false;
+			}
+		);
+		builder.addCase(productApiPost.rejected, (state: ProductState) => {
+			state.error = 'Veri Kaydederken hata oluştu';
 			state.loading = false;
 		});
 	},
 });
 
 export const productReducer = productSlice.reducer;
-export { productApi }; // action creator dışarıdan çağrılabilir
+export { productFetchApi as productApi, productApiPost }; // action creator dışarıdan çağrılabilir

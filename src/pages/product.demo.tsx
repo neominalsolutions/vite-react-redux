@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addToCart, CartItem, resetMessage } from '../slices/cart.slice';
 import { AppDispatch, RootState } from '../store';
+import React from 'react';
+import { productApiPost } from '../slices/product.slice';
 
 function ProductDemo() {
 	const dispatch = useDispatch<AppDispatch>();
@@ -10,6 +12,8 @@ function ProductDemo() {
 	const { data, loading, error } = useSelector(
 		(state: RootState) => state.productReducer
 	);
+
+	const inputRef = React.useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		// cleanup function
@@ -23,11 +27,19 @@ function ProductDemo() {
 		};
 	}, []);
 
-	// const products: any[] = [
-	// 	{ id: 1, name: 'Product 1', price: 100 },
-	// 	{ id: 2, name: 'Product 2', price: 200 },
-	// 	{ id: 3, name: 'Product 3', price: 300 },
-	// ];
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const onFormSubmit = (e: any) => {
+		e.preventDefault();
+		const productName = inputRef.current?.value;
+		console.log('productName', productName);
+
+		if (productName !== undefined) {
+			// api call
+			dispatch(productApiPost({ title: productName, price: 100 }));
+		}
+
+		console.log(productName);
+	};
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const onAddCart = (product: any) => {
@@ -55,19 +67,27 @@ function ProductDemo() {
 				<div style={{ color: 'green' }}>{action.message}</div>
 			)}
 
+			<form onSubmit={onFormSubmit}>
+				<input ref={inputRef} type="text" placeholder="Ürün İsmi"></input>
+				<input type="submit" value="Gönder" />
+			</form>
+
 			{data.map((product, index) => (
 				<>
-					<div key={index}>{product.name}</div>
-					<button
-						style={{
-							backgroundColor: cart.items.find((x) => x.id === product.id)
-								? 'yellow'
-								: 'default',
-						}}
-						onClick={() => onAddCart(product)}
-					>
-						Sepete Ekle
-					</button>
+					<div key={index}>
+						{product.name}
+						<br></br>
+						<button
+							style={{
+								backgroundColor: cart.items.find((x) => x.id === product.id)
+									? 'yellow'
+									: 'default',
+							}}
+							onClick={() => onAddCart(product)}
+						>
+							Sepete Ekle
+						</button>
+					</div>
 				</>
 			))}
 			<hr></hr>
