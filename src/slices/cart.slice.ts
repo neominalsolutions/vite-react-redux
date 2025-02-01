@@ -14,9 +14,21 @@ type Cart = {
 	total: number;
 };
 
+type CartAction = {
+	type: ActionTypes;
+	message: string;
+};
+
+type ActionTypes =
+	| 'ADD_TO_CART'
+	| 'REMOVE_FROM_CART'
+	| 'CLEAR_CART'
+	| 'INIT_CART';
+
 // sepet state'inin tipi
 type CartState = {
 	cart: Cart;
+	action: CartAction;
 };
 
 // initial state
@@ -25,6 +37,7 @@ const initialState: CartState = {
 		items: [],
 		total: 0,
 	},
+	action: { type: 'INIT_CART', message: 'Sepetiniz boş' },
 };
 
 const cartSlice = createSlice({
@@ -35,13 +48,17 @@ const cartSlice = createSlice({
 		// sepete ürün ekleme
 		addToCart: (state: CartState, action: PayloadAction<CartItem>) => {
 			const { id, name, price, quantity } = action.payload;
+			state.action.type = 'ADD_TO_CART';
 			// sepette aynı ürün varsa quantity arttırılır
 			const index = state.cart.items.findIndex((item) => item.id === id);
 			if (index === -1) {
 				// yeni ürün eklenir
+				state.action.message = 'Sepete Yeni ürün eklendi';
 				state.cart.items.push({ id, name, price, quantity });
 			} else {
 				// aynı ürün varsa quantity arttırılır
+				state.action.message =
+					'Sepette aynı üründen mevcut. Ürünün adeti güncellendi';
 				state.cart.items[index].quantity += quantity;
 			}
 			// toplam fiyat güncellenir
@@ -53,6 +70,7 @@ const cartSlice = createSlice({
 			action: PayloadAction<{ id: number; quantity: number }>
 		) => {
 			const { id, quantity } = action.payload;
+			state.action.type = 'REMOVE_FROM_CART';
 
 			const index = state.cart.items.findIndex((item) => item.id === id);
 			if (index !== -1) {
@@ -63,8 +81,15 @@ const cartSlice = createSlice({
 				// quantity 0'dan küçükse ürün silinir
 				if (state.cart.items[index].quantity <= 0) {
 					state.cart.items.splice(index, 1);
+					state.action.message = 'Ürün sepetten çıkarıldı';
+				} else {
+					state.action.message = 'Ürün adeti düşürüldü';
 				}
 			}
+		},
+		resetMessage: (state: CartState) => {
+			// action.message resetleme
+			state.action.message = '';
 		},
 	},
 	// extraReducers: (builder) => { // asenkron api call işlemleri burada yapılır
@@ -72,5 +97,5 @@ const cartSlice = createSlice({
 	// }
 });
 
-export const { addToCart, removeFromCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, resetMessage } = cartSlice.actions;
 export const cartReducer = cartSlice.reducer;

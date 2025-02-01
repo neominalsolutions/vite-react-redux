@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
 import { removeFromCart } from '../slices/cart.slice';
+import { Link } from 'react-router-dom';
 
 // sepete eklenen ürünlerin gösteren component
 function CartSummary() {
 	// sepet state'ini alıyoruz
-	const { cart } = useSelector((state: RootState) => state.cartReducer);
+	const { cart, action } = useSelector((state: RootState) => state.cartReducer);
 	// sepetten ürün çıkarma işlemi için dispatch fonksiyonunu alıyoruz
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -21,6 +22,12 @@ function CartSummary() {
 
 	return (
 		<>
+			{action.type === 'REMOVE_FROM_CART' && (
+				<>
+					{' '}
+					<div style={{ color: 'red' }}>{action.message}</div>{' '}
+				</>
+			)}
 			{/* sepet ürünlerini listeledik */}
 			{cart.items.map((item, index) => (
 				<div key={index}>
@@ -29,6 +36,8 @@ function CartSummary() {
 				</div>
 			))}
 			<p>Ara Toplam: {cart.total}</p>
+			<hr></hr>
+			<Link to="/cart-demo">Ürün Ekleme Geri Dön</Link>
 		</>
 	);
 }
