@@ -25,7 +25,7 @@ function CartSummary() {
 			{cart.items.map((item, index) => (
 				<div key={index}>
 					{item.name} - Toplam : {item.quantity} - {item.price}
-					<button onClick={onRemoveCart}>Sepetten Çıkar</button>
+					<button onClick={() => onRemoveCart(item)}>Sepetten Çıkar</button>
 				</div>
 			))}
 			<p>Ara Toplam: {cart.total}</p>

@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store';
 import { addToCart, CartItem } from '../slices/cart.slice';
+import { Link } from 'react-router-dom';
 
 function CartDemo() {
 	const dispatch = useDispatch<AppDispatch>();
@@ -29,9 +30,11 @@ function CartDemo() {
 			{products.map((product, index) => (
 				<>
 					<div key={index}>{product.name}</div>
-					<button onClick={onAddCart}>Sepete Ekle</button>
+					<button onClick={() => onAddCart(product)}>Sepete Ekle</button>
 				</>
 			))}
+
+			<Link to="/cart-summary-demo">Sepet Özeti</Link>
 		</>
 	);
 }
