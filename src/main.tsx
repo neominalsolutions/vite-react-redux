@@ -25,6 +25,8 @@ const Layout = () => {
 
 	return (
 		<p style={{ padding: '10px' }}>
+			<h1 className="text-3xl font-bold underline">Hello world!</h1>
+
 			<Link style={{ padding: 5 }} to="/counter-demo">
 				Counter Demo
 			</Link>
