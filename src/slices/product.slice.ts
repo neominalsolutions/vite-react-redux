@@ -16,13 +16,11 @@ export type ProductState = {
 	error: string;
 };
 
+const initialState: ProductState = { data: [], loading: false, error: '' };
+
 const productSlice = createSlice({
 	name: 'product',
-	initialState: {
-		data: [],
-		loading: false,
-		error: '',
-	},
+	initialState: initialState,
 	reducers: {},
 	extraReducers: (builder) => {
 		// async işlemler için ekstra reducerlar kullanılır
