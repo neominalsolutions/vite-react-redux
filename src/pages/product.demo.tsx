@@ -4,7 +4,7 @@ import { addToCart, CartItem, resetMessage } from '../slices/cart.slice';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 
-function CartDemo() {
+function ProductDemo() {
 	const dispatch = useDispatch<AppDispatch>();
 	const { action, cart } = useSelector((state: RootState) => state.cartReducer);
 
@@ -65,4 +65,4 @@ function CartDemo() {
 	);
 }
 
-export default CartDemo;
+export default ProductDemo;

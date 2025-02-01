@@ -1,12 +1,12 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import './index.css';
-import App from './App.tsx';
 import { Provider } from 'react-redux';
-import { store } from './store.ts';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import CartDemo from './pages/cart.demo.tsx';
+import App from './App.tsx';
+import './index.css';
 import CartSummary from './pages/cart.summary.demo.tsx';
+import ProductDemo from './pages/product.demo.tsx';
+import { store } from './store.ts';
 
 const router = createBrowserRouter([
 	{
@@ -15,7 +15,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/cart-demo',
-		Component: CartDemo,
+		Component: ProductDemo,
 	},
 	{
 		path: '/cart-summary-demo',
