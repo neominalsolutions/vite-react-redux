@@ -1,9 +1,8 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../store';
-import { addToCart, CartItem, resetMessage } from '../slices/cart.slice';
-import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import { productApi } from '../slices/product.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { addToCart, CartItem, resetMessage } from '../slices/cart.slice';
+import { AppDispatch, RootState } from '../store';
 
 function ProductDemo() {
 	const dispatch = useDispatch<AppDispatch>();
@@ -14,8 +13,6 @@ function ProductDemo() {
 
 	useEffect(() => {
 		// cleanup function
-
-		dispatch(productApi()); // async thunk çalıştırılır
 
 		return () => {
 			console.log('component will unmount');

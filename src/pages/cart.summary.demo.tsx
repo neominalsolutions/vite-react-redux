@@ -37,7 +37,7 @@ function CartSummary() {
 			))}
 			<p>Ara Toplam: {cart.total}</p>
 			<hr></hr>
-			<Link to="/cart-demo">Ürün Ekleme Geri Dön</Link>
+			<Link to="/product-demo">Ürün Ekleme Geri Dön</Link>
 		</>
 	);
 }

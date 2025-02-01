@@ -40,11 +40,13 @@ const productSlice = createSlice({
 						price: item.price,
 					} as Product;
 				});
+				state.loading = false;
 			}
 		);
 		builder.addCase(productApi.rejected, (state: ProductState) => {
 			// hata olduğunda
 			state.error = 'Veri çekilirken hata oluştu';
+			state.loading = false;
 		});
 	},
 });
