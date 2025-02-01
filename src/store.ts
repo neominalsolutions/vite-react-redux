@@ -6,10 +6,14 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import { counterReducer } from './slices/counter.slice';
+import { cartReducer } from './slices/cart.slice';
 
 // store reducerlar ile ilgili state'leri tutar ve değiştirir
 export const store = configureStore({
-	reducer: { counterReducer }, // reducer'lar buraya eklenecek
+	reducer: {
+		counterReducer,
+		cartReducer,
+	}, // reducer'lar buraya eklenecek
 });
 
 // uygulama genelinde kullanılacak olan store'u export ediyoruz
