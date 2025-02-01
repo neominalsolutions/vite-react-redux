@@ -7,12 +7,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { counterReducer } from './slices/counter.slice';
 import { cartReducer } from './slices/cart.slice';
+import { productReducer } from './slices/product.slice';
 
 // store reducerlar ile ilgili state'leri tutar ve değiştirir
 export const store = configureStore({
 	reducer: {
 		counterReducer,
 		cartReducer,
+		productReducer,
 	}, // reducer'lar buraya eklenecek
 });
 
