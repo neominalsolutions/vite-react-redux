@@ -8,6 +8,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { counterReducer } from './slices/counter.slice';
 import { cartReducer } from './slices/cart.slice';
 import { productReducer } from './slices/product.slice';
+import { pokemonApi } from './api/pokemon.api';
+import { setupListeners } from '@reduxjs/toolkit/query';
 
 // store reducerlar ile ilgili state'leri tutar ve değiştirir
 export const store = configureStore({
@@ -15,8 +17,13 @@ export const store = configureStore({
 		counterReducer,
 		cartReducer,
 		productReducer,
+		[pokemonApi.reducerPath]: pokemonApi.reducer,
 	}, // reducer'lar buraya eklenecek
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware().concat(pokemonApi.middleware),
 });
+
+setupListeners(store.dispatch);
 
 // uygulama genelinde kullanılacak olan store'u export ediyoruz
 // bütün stateler getState ile alınabilir ve dispatch ile değiştirilebilir

@@ -13,6 +13,7 @@ import ProductDemo from './pages/product.demo.tsx';
 import { AppDispatch, store } from './store.ts';
 import { useEffect } from 'react';
 import { productApi } from './slices/product.slice.ts';
+import PokemonDemo from './pages/pokemon.demo.tsx';
 
 const Layout = () => {
 	const dispatch = useDispatch<AppDispatch>();
@@ -32,6 +33,9 @@ const Layout = () => {
 			</Link>
 			<Link style={{ padding: 5 }} to="/cart-summary-demo">
 				Cart Summary Demo
+			</Link>
+			<Link style={{ padding: 5 }} to="/pokemon-demo">
+				Pokemon Demo
 			</Link>
 			<Outlet />
 		</p>
@@ -54,6 +58,10 @@ const router = createBrowserRouter([
 			{
 				path: '/cart-summary-demo',
 				Component: CartSummary,
+			},
+			{
+				path: '/pokemon-demo',
+				Component: PokemonDemo,
 			},
 		],
 	},
